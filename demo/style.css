@@ -512,7 +512,7 @@ ol.linenums {
 
 .wrapper {
   min-width: min(100%, 400px);
-  max-width: 400px;
+  max-width: min(1024px, 100%);
   margin: 0 auto;
   padding: 20px 0 60px;
 }
