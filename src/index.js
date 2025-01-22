@@ -174,6 +174,7 @@ export class PaginationInstance {
         };
     }
     initialize() {
+        this.callHook('beforeInit');
         let dataObj = paginationDataMap.get(this.container) || {};
         dataObj.destroyed = false;
         paginationDataMap.set(this.container, dataObj);
@@ -198,6 +199,7 @@ export class PaginationInstance {
                 this.go(Math.min(defaultPageNumber, totalPage));
             }
         });
+        this.callHook('afterInit');
     }
     parseDataSource(dataSource, done) {
         if (Helpers.isObject(dataSource)) {
@@ -309,9 +311,9 @@ export class PaginationInstance {
         this.callHook('afterRender', isForced);
         return el;
     }
-    callHook(hookName, isForced) {
+    callHook(hookName, args = null) {
         if (typeof this.attributes[hookName] === 'function') {
-            this.attributes[hookName](isForced);
+            this.attributes[hookName](args);
         }
     }
     generateHTML(args) {
@@ -501,7 +503,6 @@ export class PaginationInstance {
         const signal = this.abortController.signal;
         const el = this.model.el;
         if (!el) {
-            console.warn('Pagination: No element to observe');
             return;
         }
         el.addEventListener('click', (evt) => {
@@ -515,31 +516,34 @@ export class PaginationInstance {
                 return;
             if (button.classList.contains((_a = this.attributes.disableClassName) !== null && _a !== void 0 ? _a : '') ||
                 button.classList.contains((_b = this.attributes.activeClassName) !== null && _b !== void 0 ? _b : '')) {
-                console.log('Pagination: Clicked disabled or active element');
                 return;
             }
             if (button.classList.contains('J-paginationjs-page')) {
                 const pageNum = parseInt((_c = button.getAttribute('data-num')) !== null && _c !== void 0 ? _c : '', 10);
                 if (pageNum) {
-                    console.log('Pagination: Page button clicked:', pageNum);
+                    this.callHook('beforePageOnClick');
                     this.go(pageNum);
+                    this.callHook('afterPageOnClick');
                 }
             }
             else if (button.classList.contains('J-paginationjs-previous')) {
-                console.log('Pagination: Previous button clicked');
+                this.callHook('beforePreviousOnClick');
                 this.previous();
+                this.callHook('afterPreviousOnClick');
             }
             else if (button.classList.contains('J-paginationjs-next')) {
-                console.log('Pagination: Next button clicked');
+                this.callHook('beforeNextOnClick');
                 this.next();
+                this.callHook('afterNextOnClick');
             }
             else if (button.classList.contains('J-paginationjs-go-button')) {
                 const input = el.querySelector('.J-paginationjs-go-pagenumber');
                 if (input) {
                     const pageNum = parseInt(input.value.trim(), 10);
                     if (isNumeric(pageNum)) {
-                        console.log('Pagination: Go button clicked:', pageNum);
+                        this.callHook('beforeGoButtonOnClick', pageNum);
                         this.go(pageNum);
+                        this.callHook('afterGoButtonOnClick', pageNum);
                     }
                     else {
                         console.warn('Pagination: Invalid page number entered');
@@ -547,26 +551,28 @@ export class PaginationInstance {
                 }
             }
         }, { signal });
-        const goInput = el.querySelector('.J-paginationjs-go-pagenumber');
-        if (goInput) {
-            goInput.addEventListener('keyup', (evt) => {
+        el.addEventListener("keyup", (evt) => {
+            const target = evt.target;
+            if (target.classList.contains('J-paginationjs-go-pagenumber')) {
                 if (evt.key === 'Enter') {
-                    const pageNum = parseInt(goInput.value.trim(), 10);
+                    const pageNum = parseInt(target.value.trim(), 10);
                     if (isNumeric(pageNum)) {
-                        console.log('Pagination: Go input enter pressed:', pageNum);
+                        this.callHook("beforeGoInputOnEnter");
                         this.go(pageNum);
-                        goInput.focus();
+                        target.focus();
+                        this.callHook("afterGoInputOnEnter");
                     }
                     else {
                         console.warn('Pagination: Invalid page number entered');
                     }
                 }
-            }, { signal });
-        }
+            }
+        }, { signal });
         el.addEventListener('change', (evt) => {
             var _a;
             const target = evt.target;
             if (target.classList.contains('J-paginationjs-size-select')) {
+                this.callHook('beforeSizeSelectorChange');
                 const newSize = parseInt(target.value, 10);
                 if (isNumeric(newSize)) {
                     const sizeOptions = [...this.attributes.sizeChangerOptions];
@@ -586,6 +592,7 @@ export class PaginationInstance {
                         this.model.pageNumber = totalPage;
                     }
                     this.go(this.model.pageNumber);
+                    this.callHook('afterSizeSelectorChange');
                 }
             }
         }, { signal });
@@ -594,6 +601,7 @@ export class PaginationInstance {
         var _a, _b;
         if (this.disabled)
             return;
+        this.callHook('beforePaging', pageNumber);
         pageNumber = parseInt(pageNumber, 10);
         if (!pageNumber || pageNumber < 1)
             return;
@@ -762,6 +770,13 @@ export class PaginationInstance {
         else if (typeof this.attributes.callback === 'function') {
             this.attributes.callback(finalData, this.model);
         }
+        this.callHook('afterPaging', pageNumber);
+        if (pageNumber === 1) {
+            this.callHook('afterIsFirstPage');
+        }
+        if (pageNumber === this.getTotalPage()) {
+            this.callHook('afterIsLastPage');
+        }
     }
     getPagingData(pageNumber) {
         var _a;
@@ -795,12 +810,16 @@ export class PaginationInstance {
         this.go(this.model.pageNumber + 1, callback);
     }
     disable() {
+        this.callHook('beforeDisable');
         this.disabled = true;
         this.model.disabled = true;
+        this.callHook('afterDisable');
     }
     enable() {
+        this.callHook('beforeEnable');
         this.disabled = false;
         this.model.disabled = false;
+        this.callHook('afterEnable');
     }
     refresh(callback) {
         this.go(this.model.pageNumber, callback);
@@ -820,6 +839,7 @@ export class PaginationInstance {
         const dataObj = paginationDataMap.get(this.container) || {};
         if (dataObj.destroyed)
             return;
+        this.callHook('beforeDestroy');
         if (this.abortController) {
             this.abortController.abort();
             this.abortController = null;
@@ -830,8 +850,11 @@ export class PaginationInstance {
         }
         this.model = null;
         paginationDataMap.delete(this.container);
-        if (!silent && typeof this.attributes.afterDestroy === 'function') {
-            this.attributes.afterDestroy();
+        if (!silent) {
+            this.callHook('afterDestroy');
+            if (typeof this.attributes.afterDestroy === 'function') {
+                this.attributes.afterDestroy();
+            }
         }
         dataObj.destroyed = true;
         dataObj.initialized = false;
