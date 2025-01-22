@@ -1,0 +1,1 @@
+# paginationjs-vanilla
