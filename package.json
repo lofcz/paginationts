@@ -42,6 +42,7 @@
     "tslib": "^2.8.1",
     "typescript": "^5.7.3",
     "vite": "^6.0.11",
+    "vite-plugin-copy": "^0.1.6",
     "vite-plugin-css-injected-by-js": "^3.5.2",
     "vite-plugin-mkcert": "^1.17.6"
   }

@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import path from 'path';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import mkcert from 'vite-plugin-mkcert'
+import { copy } from 'vite-plugin-copy';
 
 export default defineConfig({
     root: './demo',
@@ -34,7 +35,19 @@ export default defineConfig({
     },
     plugins: [
         cssInjectedByJsPlugin(),
-        mkcert()
+        mkcert(),
+        copy({
+            targets: [
+                {
+                    src: 'src/highlight.js',
+                    dest: 'dist'
+                },
+                {
+                    src: 'src/highlight.css',
+                    dest: 'dist'
+                }
+            ]
+        })
     ],
     build: {
         cssCodeSplit: true,
