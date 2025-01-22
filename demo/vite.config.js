@@ -39,11 +39,11 @@ export default defineConfig({
         copy({
             targets: [
                 {
-                    src: 'src/highlight.js',
+                    src: 'highlight.js',
                     dest: 'dist'
                 },
                 {
-                    src: 'src/highlight.css',
+                    src: 'highlight.css',
                     dest: 'dist'
                 }
             ]
