@@ -45,8 +45,8 @@ export default defineConfig({
                 fs.ensureDirSync('dist/assets');
 
                 // Kopírujeme oba soubory
-                fs.copyFileSync('demo/highlight.js', 'demo/dist/assets/highlight.js');
-                fs.copyFileSync('demo/highlight.css', 'demo/dist/assets/highlight.css');
+                fs.copyFileSync('demo/highlight.js', 'demo/dist/highlight.js');
+                fs.copyFileSync('demo/highlight.css', 'demo/dist/highlight.css');
             }
         }
     ],
