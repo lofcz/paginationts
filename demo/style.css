@@ -25,7 +25,7 @@ body > *:last-child {
 }
 
 a {
-  color: #4183C4;
+  color: white;
 }
 
 a.absent {
@@ -834,6 +834,16 @@ ol.linenums {
 .data-container .loading {
   padding-top: 15%;
   text-align: center;
+}
+
+::selection {
+  background-color: #512bd4;
+  color: white;
+}
+
+::-moz-selection {
+  background-color: #512bd4;
+  color: white;
 }
 
 /*# sourceMappingURL=style.css.map */

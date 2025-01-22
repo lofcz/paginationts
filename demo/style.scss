@@ -22,7 +22,8 @@ body > *:last-child {
   margin-bottom: 0 !important; }
 
 a {
-  color: #4183C4; }
+  color: white;
+}
 a.absent {
   color: #cc0000;
 }
@@ -654,3 +655,12 @@ ol.linenums {
   text-align: center;
 }
 
+::selection {
+  background-color: #512bd4;
+  color: white;
+}
+
+::-moz-selection {
+  background-color: #512bd4;
+  color: white;
+}
