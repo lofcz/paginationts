@@ -20,7 +20,8 @@
   "scripts": {
     "dev": "vite demo",
     "build": "npx rollup --config rollup.config.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "demobuild": "vite build demo"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.2",
