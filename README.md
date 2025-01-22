@@ -1,3 +1,8 @@
+[![NPM version][npm-image]][npm-url]
+
+[npm-url]: https://npmjs.org/package/paginate-next
+[npm-image]: http://img.shields.io/npm/v/paginate-next.svg
+
 # PaginationTs
 
 <img align="left" width="128" height="128" alt="PaginationTs Icon" src="https://raw.githubusercontent.com/lofcz/paginationts/refs/heads/master/icon.svg" />
@@ -9,7 +14,7 @@ TypeScript-based drop-in replacement of <a target="_blank" href="https://github.
 
 Install via npm:
 ```
-npm install pagination-next --save
+npm install paginate-next --save
 ```
 
 Or via CDN:
