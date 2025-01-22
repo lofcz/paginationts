@@ -343,9 +343,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // If no custom callback is specified, create a default one:
             if (!options.callback) {
                 options.callback = function(data, pagination) {
-                    if (window.console) {
-                        console.log(id, desc, data, pagination);
-                    }
                     // Render data list
                     if (dataContainer) {
                         dataContainer.innerHTML = _this.template(data);
@@ -443,9 +440,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 logs.push(argstr);
 
-                if (window.console) {
-                    console.log(i, '@' + diff / 1000, '[' + event + ']', data);
-                }
                 var li = document.createElement('li');
                 li.innerHTML = logs.join(' ');
                 logContainer.appendChild(li);

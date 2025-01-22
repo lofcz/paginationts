@@ -6,6 +6,7 @@
     <title>PaginationTS Demo</title>
     <link rel="icon" href="favicon.svg">
     <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="highlight.css" type="text/css">
 </head>
 <body>
 <div class="header">
@@ -42,7 +43,7 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>pagination("#demo", {
+<pre><code class="language-js">pagination("#demo", {
     dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 195],
     callback: function(data, pagination) {
         // template method of yourself
@@ -61,7 +62,7 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>pagination("#demo", {
+<pre><code class="language-js">pagination("#demo", {
     dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 35],
     pageSize: 5,
     pageNumber: 3,
@@ -83,7 +84,7 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>pagination("#demo", {
+<pre><code class="language-js">pagination("#demo", {
     dataSource: 'https://api.flickr.com/services/feeds/photos_public.gne?tags=cat&tagmode=any&format=json&jsoncallback=?',
     locator: 'items',
     totalNumber: 120,
@@ -110,7 +111,7 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>pagination("#demo", {
+<pre><code class="language-js">pagination("#demo", {
     dataSource: 'https://api.flickr.com/services/feeds/photos_public.gne?tags=cat&tagmode=any&format=json&jsoncallback=?',
     locator: 'items',
     totalNumberLocator: function(response) {
@@ -140,7 +141,7 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>pagination("#demo", {
+<pre><code class="language-js">pagination("#demo", {
     dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 15],
     pageSize: 5,
     showNavigator: true,
@@ -163,7 +164,7 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>pagination("#demo", {
+<pre><code class="language-js">pagination("#demo", {
     dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 50],
     pageSize: 5,
     showPageNumbers: false,
@@ -185,7 +186,7 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>pagination("#demo", {
+<pre><code class="language-js">pagination("#demo", {
     dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 100],
     pageSize: 8,
     formatResult: function(data) {
@@ -212,7 +213,7 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>pagination("#demo", {
+<pre><code class="language-js">pagination("#demo", {
     dataSource: [{a :1}, {a :2}, {a :3}, {a :4}, /* ... */, {a :50}],
     pageSize: 8,
     formatResult: function(data) {
@@ -238,7 +239,7 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>pagination("#demo", {
+<pre><code class="language-js">pagination("#demo", {
     dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 100],
     pageSize: 5,
     showPrevious: false,
@@ -260,7 +261,7 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>pagination("#demo", {
+<pre><code class="language-js">pagination("#demo", {
     dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 195],
     pageSize: 5,
     showSizeChanger: true,
@@ -281,7 +282,7 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>pagination("#demo", {
+<pre><code class="language-js">pagination("#demo", {
     dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 40],
     pageSize: 5,
     showGoInput: true,
@@ -303,7 +304,7 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>pagination("#demo", {
+<pre><code class="language-js">pagination("#demo", {
     dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 25],
     pageSize: 5,
     showGoInput: true,
@@ -376,7 +377,7 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>pagination("#demo", {
+<pre><code class="language-js">pagination("#demo", {
     dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 35],
     pageSize: 5,
     autoHidePrevious: true,
@@ -398,7 +399,7 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>pagination("#demo", {
+<pre><code class="language-js">pagination("#demo", {
     dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 50],
     pageSize: 5,
     pageRange: null,
@@ -425,5 +426,9 @@
     </div>
 </script>
 <script type="module" src="main.ts"></script>
+<script src="highlight.js"></script>
+<script>
+    hljs.highlightAll();
+</script>
 </body>
 </html>
