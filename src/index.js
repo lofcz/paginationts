@@ -591,7 +591,7 @@ export class PaginationInstance {
         }, { signal });
     }
     go(pageNumber, callback) {
-        var _a;
+        var _a, _b;
         if (this.disabled)
             return;
         pageNumber = parseInt(pageNumber, 10);
@@ -605,39 +605,107 @@ export class PaginationInstance {
             this.renderAndCallback(pageNumber, pageData, callback);
             return;
         }
+        const userAjax = typeof this.attributes.ajax === 'function'
+            ? this.attributes.ajax()
+            : this.attributes.ajax;
+        const settings = Object.assign({ method: 'GET', headers: { 'Content-Type': 'application/json' } }, userAjax);
+        if (typeof settings.beforeSend === 'function') {
+            const result = settings.beforeSend();
+            if (result === false) {
+                return;
+            }
+        }
         const pageSize = (_a = this.attributes.pageSize) !== null && _a !== void 0 ? _a : 10;
         const alias = this.attributes.alias || {};
         const pageSizeName = alias.pageSize || 'pageSize';
         const pageNumberName = alias.pageNumber || 'pageNumber';
-        let fetchParams = {};
-        const userAjax = typeof this.attributes.ajax === 'function'
-            ? this.attributes.ajax()
-            : this.attributes.ajax;
-        fetchParams = extend({}, userAjax || {});
-        if (!fetchParams.method) {
-            fetchParams.method = 'GET';
-        }
-        if (!fetchParams.headers) {
-            fetchParams.headers = { 'Content-Type': 'application/json' };
-        }
-        const paramObj = {};
+        const url = this.attributes.dataSource;
+        const isJSONP = settings.dataType === 'jsonp' || /=\?/.test(url);
+        let paramObj = {};
         paramObj[pageSizeName] = pageSize;
-        paramObj[pageNumberName] = pageNumber;
-        if (fetchParams.pageNumberStartWithZero) {
-            paramObj[pageNumberName] = pageNumber - 1;
+        paramObj[pageNumberName] = settings.pageNumberStartWithZero
+            ? pageNumber - 1
+            : pageNumber;
+        if (settings.data && typeof settings.data === 'object') {
+            paramObj = Object.assign(Object.assign({}, paramObj), settings.data);
         }
-        let url = this.attributes.dataSource;
-        if (fetchParams.method.toUpperCase() === 'GET') {
+        if (isJSONP) {
+            this.disable();
+            const urlObj = new URL(url, window.location.href);
+            Object.entries(paramObj).forEach(([key, value]) => {
+                urlObj.searchParams.set(key, String(value));
+            });
+            const callbackName = 'paginationCallback' + Date.now();
+            let finalUrl = urlObj.toString().replace(/=(\?|%3F)/, `=${callbackName}`);
+            if (settings.jsonp && settings.jsonp !== 'callback') {
+                const re = new RegExp(settings.jsonp + '=(\\?|%3F)', 'g');
+                finalUrl = finalUrl.replace(re, `${settings.jsonp}=${callbackName}`);
+            }
+            const script = document.createElement('script');
+            script.src = finalUrl;
+            let timeoutId = null;
+            const cleanup = () => {
+                if (window[callbackName]) {
+                    delete window[callbackName];
+                }
+                if (script.parentNode) {
+                    document.body.removeChild(script);
+                }
+                if (timeoutId !== null) {
+                    clearTimeout(timeoutId);
+                }
+            };
+            const requestTimeout = typeof settings.timeout === 'number' ? settings.timeout : 20000;
+            timeoutId = window.setTimeout(() => {
+                cleanup();
+                if (typeof this.attributes.onError === 'function') {
+                    this.attributes.onError(new Error('JSONP request timeout'), 'jsonpTimeout');
+                }
+                this.enable();
+            }, requestTimeout);
+            window[callbackName] = (response) => {
+                cleanup();
+                if (this.isDynamicTotalNumber && typeof this.attributes.totalNumberLocator === 'function') {
+                    this.model.totalNumber = this.attributes.totalNumberLocator(response);
+                }
+                else {
+                    this.model.totalNumber = this.attributes.totalNumber;
+                }
+                try {
+                    const finalDataArray = this.filterDataWithLocator(response);
+                    this.renderAndCallback(pageNumber, finalDataArray, callback);
+                }
+                catch (err) {
+                    if (typeof this.attributes.onError === 'function') {
+                        this.attributes.onError(err, 'jsonpError');
+                    }
+                }
+                finally {
+                    this.enable();
+                }
+            };
+            script.onerror = () => {
+                cleanup();
+                if (typeof this.attributes.onError === 'function') {
+                    this.attributes.onError(new Error('JSONP request failed'), 'jsonpError');
+                }
+                this.enable();
+            };
+            document.body.appendChild(script);
+            return;
+        }
+        let fetchUrl = url;
+        const method = (settings.method || 'GET').toUpperCase();
+        if (method === 'GET') {
             const qs = new URLSearchParams(paramObj).toString();
-            url += url.indexOf('?') === -1 ? `?${qs}` : `&${qs}`;
+            fetchUrl += fetchUrl.includes('?') ? `&${qs}` : `?${qs}`;
+            delete settings.body;
         }
         else {
-            if (!fetchParams.body) {
-                fetchParams.body = JSON.stringify(paramObj);
-            }
+            settings.body = (_b = settings.body) !== null && _b !== void 0 ? _b : JSON.stringify(paramObj);
         }
         this.disable();
-        fetch(url, fetchParams)
+        fetch(fetchUrl, settings)
             .then((response) => {
             if (!response.ok) {
                 throw new Error('Network response was not ok, status=' + response.status);
@@ -645,8 +713,7 @@ export class PaginationInstance {
             return response.json();
         })
             .then((data) => {
-            if (this.isDynamicTotalNumber &&
-                typeof this.attributes.totalNumberLocator === 'function') {
+            if (this.isDynamicTotalNumber && typeof this.attributes.totalNumberLocator === 'function') {
                 this.model.totalNumber = this.attributes.totalNumberLocator(data);
             }
             else {
@@ -662,6 +729,8 @@ export class PaginationInstance {
             else {
                 throwError(err.message);
             }
+        })
+            .finally(() => {
             this.enable();
         });
     }

@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PaginationTS Demo</title>
     <link rel="icon" href="favicon.svg">
+    <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body>
 <div class="header">
     <div class="title">PaginationTs<span>1.0.0</span></div>
     <div class="desc">
-        A TypeScript rewrite of pagination.js without JQuery dependency.<br>
+        TypeScript rewrite of pagination.js without JQuery dependency.<br>
         Almost all the ways you can think of on pagination.
     </div>
     <div class="download">
@@ -27,7 +28,11 @@
     </div>
 </div>
 
-<div id="gototop">Top</div>
+<div id="gototop" title="Scroll to top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 4L4 12H9V20H15V12H20L12 4Z" fill="currentColor"/>
+    </svg>
+</div>
 
 
 <script type="text/template" id="template-demo1">
@@ -37,8 +42,8 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>$('#demo').pagination({
-    dataSource: [1, 2, 3, 4, 5, 6, 7, ... , 195],
+<pre><code>pagination("#demo", {
+    dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 195],
     callback: function(data, pagination) {
         // template method of yourself
         var html = template(data);
@@ -56,8 +61,8 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>$('#demo').pagination({
-    dataSource: [1, 2, 3, 4, 5, 6, 7, ... , 35],
+<pre><code>pagination("#demo", {
+    dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 35],
     pageSize: 5,
     pageNumber: 3,
     callback: function(data, pagination) {
@@ -78,7 +83,7 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>$('#demo').pagination({
+<pre><code>pagination("#demo", {
     dataSource: 'https://api.flickr.com/services/feeds/photos_public.gne?tags=cat&tagmode=any&format=json&jsoncallback=?',
     locator: 'items',
     totalNumber: 120,
@@ -105,7 +110,7 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>$('#demo').pagination({
+<pre><code>pagination("#demo", {
     dataSource: 'https://api.flickr.com/services/feeds/photos_public.gne?tags=cat&tagmode=any&format=json&jsoncallback=?',
     locator: 'items',
     totalNumberLocator: function(response) {
@@ -135,8 +140,8 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>$('#demo').pagination({
-    dataSource: [1, 2, 3, 4, 5, 6, 7, ... , 15],
+<pre><code>pagination("#demo", {
+    dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 15],
     pageSize: 5,
     showNavigator: true,
     formatNavigator: '<%= rangeStart %>-<%= rangeEnd %> of <%= totalNumber %> items',
@@ -158,8 +163,8 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>$('#demo').pagination({
-    dataSource: [1, 2, 3, 4, 5, 6, 7, ... , 50],
+<pre><code>pagination("#demo", {
+    dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 50],
     pageSize: 5,
     showPageNumbers: false,
     showNavigator: true,
@@ -180,8 +185,8 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>$('#demo').pagination({
-    dataSource: [1, 2, 3, 4, 5, 6, 7, ... , 100],
+<pre><code>pagination("#demo", {
+    dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 100],
     pageSize: 8,
     formatResult: function(data) {
         var result = [];
@@ -207,8 +212,8 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>$('#demo').pagination({
-    dataSource: [{a :1}, {a :2}, {a :3}, {a :4}, ... , {a :50}],
+<pre><code>pagination("#demo", {
+    dataSource: [{a :1}, {a :2}, {a :3}, {a :4}, /* ... */, {a :50}],
     pageSize: 8,
     formatResult: function(data) {
         for (var i = 0, len = data.length; i < len; i++) {
@@ -232,8 +237,8 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>$('#demo').pagination({
-    dataSource: [1, 2, 3, 4, 5, 6, 7, ... , 100],
+<pre><code>pagination("#demo", {
+    dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 100],
     pageSize: 5,
     showPrevious: false,
     showNext: false,
@@ -254,8 +259,8 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>$('#demo').pagination({
-    dataSource: [1, 2, 3, 4, 5, 6, 7, ... , 195],
+<pre><code>pagination("#demo", {
+    dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 195],
     pageSize: 5,
     showSizeChanger: true,
     callback: function(data, pagination) {
@@ -275,8 +280,8 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>$('#demo').pagination({
-    dataSource: [1, 2, 3, 4, 5, 6, 7, ... , 40],
+<pre><code>pagination("#demo", {
+    dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 40],
     pageSize: 5,
     showGoInput: true,
     showGoButton: true,
@@ -297,8 +302,8 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>$('#demo').pagination({
-    dataSource: [1, 2, 3, 4, 5, 6, 7, ... , 25],
+<pre><code>pagination("#demo", {
+    dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 25],
     pageSize: 5,
     showGoInput: true,
     showGoButton: true,
@@ -370,8 +375,8 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>$('#demo').pagination({
-    dataSource: [1, 2, 3, 4, 5, 6, 7, ... , 35],
+<pre><code>pagination("#demo", {
+    dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 35],
     pageSize: 5,
     autoHidePrevious: true,
     autoHideNext: true,
@@ -392,8 +397,8 @@
             <div class="data-container"></div>
         </div>
         <div class="inner-right code">
-<pre><code>$('#demo').pagination({
-    dataSource: [1, 2, 3, 4, 5, 6, 7, ... , 50],
+<pre><code>pagination("#demo", {
+    dataSource: [1, 2, 3, 4, 5, 6, 7, /* ... */, 50],
     pageSize: 5,
     pageRange: null,
     showPageNumbers: true,

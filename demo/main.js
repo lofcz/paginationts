@@ -1,4 +1,3 @@
-import './style.scss';
 import { pagination } from '../src';
 import '../src/styles.scss';
 document.addEventListener('DOMContentLoaded', function () {
