@@ -1,0 +1,14 @@
+{
+  "compileOnSave":  true,
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "sourceMap": true,
+    "target": "ES2017",
+    "lib": ["ES2017", "ES2018", "ES2019", "ES2020", "ES2021", "dom"],
+    "skipLibCheck": true,
+    "removeComments": true,
+    "allowUmdGlobalAccess": true,
+    "moduleResolution": "node"
+  }
+}
