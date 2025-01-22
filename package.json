@@ -1,5 +1,5 @@
 {
-  "name": "paginationts",
+  "name": "paginate-ng",
   "version": "1.0.0",
   "description": "Successor of paginationjs, rewritten in TypeScript without JQuery dependency",
   "keywords": [

@@ -178,6 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     for (var i = 0; i < data.length; i++) {
                         data[i].a = data[i].a + ' - bad guys';
                     }
+                    return data;
                 },
                 callback: function (data) {
                     var paginationWrapper = document.querySelector('#demo9');
@@ -447,11 +448,25 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (!container)
                             return;
                         if (type === 'get') {
+                            var result = pagination(container, action);
+                            if (action === 'getCurrentPageData') {
+                                try {
+                                    alert(JSON.stringify(result));
+                                }
+                                catch (ex) {
+                                    alert(result);
+                                }
+                            }
+                            else {
+                                alert(result);
+                            }
                         }
                         else {
                             if (params) {
+                                pagination(container, action, params);
                             }
                             else {
+                                pagination(container, action);
                             }
                         }
                     }
