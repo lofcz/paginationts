@@ -3,6 +3,8 @@ import path from 'path';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import mkcert from 'vite-plugin-mkcert'
 import { copy } from 'vite-plugin-copy';
+import fs from 'fs-extra';
+
 
 export default defineConfig({
     root: './demo',
@@ -36,18 +38,17 @@ export default defineConfig({
     plugins: [
         cssInjectedByJsPlugin(),
         mkcert(),
-        copy({
-            targets: [
-                {
-                    src: 'highlight.js',
-                    dest: 'dist'
-                },
-                {
-                    src: 'highlight.css',
-                    dest: 'dist'
-                }
-            ]
-        })
+        {
+            name: 'copy-highlight-files',
+            closeBundle() {
+                // Zajistíme, že assets složka existuje
+                fs.ensureDirSync('dist/assets');
+
+                // Kopírujeme oba soubory
+                fs.copyFileSync('demo/highlight.js', 'demo/dist/assets/highlight.js');
+                fs.copyFileSync('demo/highlight.css', 'demo/dist/assets/highlight.css');
+            }
+        }
     ],
     build: {
         cssCodeSplit: true,
