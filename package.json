@@ -23,6 +23,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "demobuild": "vite build demo"
   },
+  "files": [
+    "dist/",
+    "package.json",
+    "README.md"
+  ],
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.2",
     "@rollup/plugin-node-resolve": "^16.0.0",
