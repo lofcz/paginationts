@@ -1,6 +1,6 @@
 {
   "name": "paginate-next",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Successor of paginationjs, rewritten in TypeScript without JQuery dependency",
   "keywords": [
     "pagination"

@@ -511,8 +511,8 @@ ol.linenums {
 }
 
 .wrapper {
-  min-width: 400px;
-  max-width: 1024px;
+  min-width: min(100%, 400px);
+  max-width: 400px;
   margin: 0 auto;
   padding: 20px 0 60px;
 }
@@ -694,6 +694,38 @@ ol.linenums {
   color: #B69AC6;
 }
 
+.build-buttons {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  width: 100%;
+  row-gap: 10px;
+  flex-flow: wrap;
+}
+
+@media (max-width: 768px) {
+  .header .title span {
+    display: block;
+  }
+  .inner-left {
+    width: 100% !important;
+  }
+  .inner-right {
+    width: 100% !important;
+  }
+  .header .title {
+    font-size: 50px;
+  }
+  .demo-section .demo-section-title {
+    font-size: 30px !important;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .demo {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+}
 .header .desc {
   font-size: 20px;
 }
@@ -844,6 +876,10 @@ ol.linenums {
 ::-moz-selection {
   background-color: #512bd4;
   color: white;
+}
+
+.data-container a {
+  color: #0074D9;
 }
 
 /*# sourceMappingURL=style.css.map */
